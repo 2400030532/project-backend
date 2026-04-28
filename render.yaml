@@ -1,21 +1,18 @@
-services:
-  # PostgreSQL Database
-  - type: pserv
-    name: easyintern-db
+databases:
+  - name: easyintern-db
     plan: free
     region: oregon
     ipAllowList: []
     databaseName: easyintern
     user: easyintern_user
-    postgresSQLVersion: 15
+    postgresMajorVersion: "15"
 
-  # Backend API Service
+services:
   - type: web
     name: easyintern-api
     env: java
     plan: free
     region: oregon
-    rootDir: backend
     buildCommand: mvn clean package -DskipTests
     startCommand: java -jar target/easyintern-api-1.0.0.jar
     envVars:
@@ -38,16 +35,4 @@ services:
       - key: SPRING_JPA_HIBERNATE_DDL_AUTO
         value: update
       - key: APP_CORS_ALLOWED_ORIGINS
-        value: https://easyintern-frontend.onrender.com,http://localhost:5173
-
-  # Frontend Service
-  - type: static
-    name: easyintern-frontend
-    plan: free
-    region: oregon
-    rootDir: frontend
-    buildCommand: npm install && npm run build
-    staticPublishPath: dist
-    envVars:
-      - key: VITE_API_BASE_URL
-        value: https://easyintern-api.onrender.com
+        value: https://project-frontend.onrender.com,http://localhost:5173
